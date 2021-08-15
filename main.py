@@ -15,7 +15,7 @@ from random import shuffle
 app = Flask(__name__)
 Bootstrap(app)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hippo-stock.db' #os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -85,7 +85,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-@app.route('')
+@app.route('/')
 def index():
     return render_template('index.html')
 
