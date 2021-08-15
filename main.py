@@ -15,8 +15,7 @@ from random import shuffle
 
 app = Flask(__name__)
 Bootstrap(app)
-
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hippo-stock.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
@@ -159,7 +158,7 @@ def user_home():
 def comp_data():
     stk = request.args.get('stk')
     payload = {
-        "token": "sk_9f6274ec2b0140d2837fd35581a96f64"
+        "token": os.environ.get('TOKEN')
     }
     info = requests.get(f'https://cloud.iexapis.com/stable/stock/{stk}/company', params=payload)
     if info and stk.lower()!='appl':
@@ -212,7 +211,7 @@ def articles():
     if stocks:
         for stock in stocks:
             payload = {
-                "token": "sk_9f6274ec2b0140d2837fd35581a96f64"
+                "token": os.environ.get('TOKEN')
             }
             info = requests.get(f'https://cloud.iexapis.com/stable/stock/{stock.stock_name}/news/last/7', params=payload)
             if info:
@@ -249,7 +248,7 @@ def buy_stock():
         name = None
     if form.validate_on_submit():
         payload = {
-            "token": "sk_9f6274ec2b0140d2837fd35581a96f64"
+            "token": os.environ.get('TOKEN')
         }
         try:
             cost = int(requests.get(f'https://cloud.iexapis.com/stable/stock/{form.stk_name.data}/quote/latestPrice', params=payload).json())
@@ -302,7 +301,7 @@ def sell_stock():
         if num_stks >= int(form.stk_amount.data):
             stock_amount = num_stks - int(form.stk_amount.data)
             payload = {
-                "token": "sk_9f6274ec2b0140d2837fd35581a96f64"
+                "token": os.environ.get('TOKEN')
             }
             current_val = int(requests.get(f'https://cloud.iexapis.com/stable/stock/{form.stk_name.data}/quote/latestPrice', params=payload).json())
             if stock_amount == 0:
