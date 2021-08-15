@@ -1,14 +1,13 @@
 import json
-
 from flask import Flask, render_template, redirect, flash, url_for, request
 from flask_bootstrap import Bootstrap
 from forms import LoginForm, RegisterForm, BuyForm, SellForm, ChangePassword, FindFriend
-from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
-from flask_gravatar import Gravatar
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from flask_gravatar import Gravatar
+import os
 import requests
 from random import shuffle
 
@@ -16,7 +15,7 @@ from random import shuffle
 app = Flask(__name__)
 Bootstrap(app)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hippo-stock.db' #os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -94,6 +93,7 @@ def index():
 @app.route('/favicon.ico')
 def favicon():
     return url_for('static', filename='icons/icon.ico')
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
