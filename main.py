@@ -91,6 +91,10 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/favicon.ico')
+def favicon():
+    return 'hello'
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     login_form = LoginForm()
