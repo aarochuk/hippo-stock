@@ -93,7 +93,7 @@ def index():
 
 @app.route('/favicon.ico')
 def favicon():
-    return 'hello'
+    return url_for('static', filename='icons/icon.ico')
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
