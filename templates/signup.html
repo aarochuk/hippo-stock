@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} Sign Up {% endblock %}
+{% block head %}
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+    <link href="{{url_for('static', filename='css/signin.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block content%}
+<main class="form-signin" style="text-align: center" >
+    <a href="{{url_for('index')}}">
+    <img class="mb-4" src="{{url_for('static', filename='images/logo_img.png')}}" alt="" width="72" height="57" style="border-radius: 2px"></a>
+  <form method="post" novalidate>
+    <h1 class="h3 mb-3 fw-normal">Welcome Sign Up!</h1>
+      {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="text-danger">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+      {{ form.csrf_token }}
+      {{ form.email(class_='form-control spacer', id='floatingInput') }}
+        {% if form.email.errors %}
+        {% for error in form.email.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
+        {% endif %}
+      {{ form.name(class_='form-control spacer', id='floatingInput') }}
+      {{ form.password(class_='form-control spacer', id='floatingPassword') }}
+        {% if form.password.errors %}
+        {% for error in form.password.errors %}<p class="text-danger">{{ error }}</p>{% endfor %}
+        {% endif %}
+      {{ form.submit(class_="w-100 btn btn-lg btn-success pusher") }}
+
+  </form>
+    <a href="{{url_for('login')}}" class="text-success" >Already have an account? Login!</a>
+    <p class="mt-5 mb-3 text-muted">&copy; 2021 Made by uglkjgj</p>
+
+</main>
+{% endblock %}

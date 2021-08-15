@@ -1,0 +1,135 @@
+{% extends "base.html"%}
+{% block title %}Home{% endblock %}
+{% block head %}
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/carousel/">
+    <link href="{{url_for('static', filename='css/index.css')}}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+      <img src="{{url_for('static', filename='images/logo_img.png')}}" alt="" width="35" height="30" style="border-radius: 2px">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+
+
+        <ul class="navbar-nav mb-2 mb-md-0 float-end">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{url_for('login')}}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('signup')}}">Sign Up</a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+
+      <div class="carousel-item active" style="background: url('../static/images/view_stocks.jpg')no-repeat center fixed; background-size: cover;">
+        <div class="container">
+          <div class="carousel-caption text-start">
+            <h1 style="color: #D5EEBB" >View daily stock prices.</h1>
+            <p style="font-size: 1em; color: #000" >Photo by <a href="https://unsplash.com/@epiccanada?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Adi Kavazovic</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  </p>
+            <p><a class="btn btn-lg btn-success" href="#_view">View More</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-item" style="background: url('../static/images/view_articles.png')no-repeat center fixed; background-size: cover;">
+        <div class="container">
+          <div class="carousel-caption">
+            <h1 style="color: #D5EEBB">Read Stock Articles.</h1>
+            <p style="font-size: 1em; color: #000">Photo by <a href="https://unsplash.com/@anniespratt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Annie Spratt</a> on <a href="https://unsplash.com/s/photos/stocks?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  </p>
+            <p><a class="btn btn-lg btn-success" href="#_read">View More</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-item" style="background: url('../static/images/trade_stocks.jpg')no-repeat center fixed; background-size: cover;">
+        <div class="container">
+          <div class="carousel-caption text-end">
+            <h1 style="color: #D5EEBB">Trade stocks with fake money.</h1>
+            <p style="font-size: 1em; color: #000">Photo by <a href="https://unsplash.com/@chuttersnap?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">CHUTTERSNAP</a> on <a href="https://unsplash.com/s/photos/trade?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+</p>
+            <p><a class="btn btn-lg btn-success" href="#_buy">View More</a></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
+  <div class="container marketing" id="features">
+
+    <div class="row featurette" id="_view">
+      <div class="col-md-7">
+        <h2 class="featurette-heading">View Stocks and Cryptocurrencies.</h2>
+        <p class="lead">View the value of stocks and cryptocurrencies and get emails detailing changes in the value of stocks when they increase or decrease.</p>
+      </div>
+      <div class="col-md-5" style="background: url('../static/images/view_stocks.jpg')no-repeat center fixed; background-size: cover;">
+
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette" id="_read">
+      <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading">Read Articles on Stocks and currencies.</h2>
+        <p class="lead">Read articles on stocks and currencies that interest you. Subscribe to Stocks and view information related to the stock.</p>
+      </div>
+      <div class="col-md-5 order-md-1" style="background: url('../static/images/view_articles.png')no-repeat center fixed; background-size: cover;">
+
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette" id="_buy">
+      <div class="col-md-7">
+        <h2 class="featurette-heading">Trade Stocks with Fake Money.</h2>
+        <p class="lead">Trade stocks with fake money and see the portfolio of your friends. Share your trades with your friends.</p>
+      </div>
+      <div class="col-md-5" style="background: url('../static/images/trade_stocks.jpg')no-repeat center fixed; background-size: cover;">
+
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+  </div>
+
+  <footer class="container">
+    <p class="float-end"><a href="#">Back to top</a></p>
+    <p>&copy; 2021 Made by @uglkjgj &middot; <a href="https://github.com/uglkjgj/uglkjgj/"><img src="https://img.icons8.com/doodle/48/000000/github--v1.png"/></a></p>
+  </footer>
+</main>
+
+{% endblock %}

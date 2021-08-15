@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} Log in {% endblock %}
+{% block head %}
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+    <link href="{{url_for('static', filename='css/signin.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block content%}
+<main class="form-signin" style="text-align: center" >
+    <a href="{{url_for('index')}}">
+    <img class="mb-4" src="{{url_for('static', filename='images/logo_img.png')}}" alt="" width="72" height="57" style="border-radius: 2px"></a>
+  <form method="post">
+    <h1 class="h3 mb-3 fw-normal">Welcome Back Login!</h1>
+      {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="text-danger">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+      {{ form.csrf_token }}
+      {{ form.email(class_='form-control spacer', id='floatingInput') }}
+      {{ form.password(class_='form-control spacer', id='floatingPassword') }}
+      {{ form.submit(class_="w-100 btn btn-lg btn-success pusher") }}
+  </form>
+    <p style="margin-bottom: 1rem"><a href="#" class="text-danger" style="font-size: 1rem"> Forgot Password?</a> </p>
+    <a href="{{url_for('signup')}}" class="text-success" >Dont have an account? Sign up!</a>
+    <p class="mt-5 mb-3 text-muted">&copy; 2021 Made by uglkjgj</p>
+
+</main>
+{% endblock %}

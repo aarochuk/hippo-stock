@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %} {{current_user.name}} {% endblock %}
+{% block head %}
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/headers/">
+    <link href="{{url_for('static', filename='css/user_home.css')}}" rel="stylesheet">
+    {% if person.stocks %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {packages: ['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        // Define the chart to be drawn.
+        var data = new google.visualization.arrayToDataTable([
+          {% for k, v in stock_dict.items() %}
+            {% if v is string %}
+              ['{{ k }}', '{{ v }}'],
+            {% else %}
+              ['{{ k }}', {{ v }}],
+            {% endif %}
+          {% endfor %}
+        ]);
+
+        var options = {
+          title: 'Stocks'
+        }
+        // Instantiate and draw the chart.
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
+    </script>
+    {% endif %}
+  </head>
+{% endblock %}
+
+{% block content%}
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <a class="navbar-brand" href="#">
+          <img src="{{url_for('static', filename='images/logo_img.png')}}" alt="" width="35" height="30" style="border-radius: 2px">
+          </a>
+          <li><a href="{{url_for('user_home')}}" class="nav-link px-2 link-dark">Dashboard</a></li>
+          <li><a href="{{url_for('articles')}}" class="nav-link px-2 link-dark">Articles</a></li>
+        </ul>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{{url_for('user_home')}}" method="post">
+          <input name='stock-search' type="search" class="form-control" placeholder="Search Stock..." aria-label="Search">
+        </form>
+
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{ current_user.email | gravatar }}"/>
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+            <li><a class="dropdown-item" href="{{url_for('profile')}}">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{url_for('logout')}}">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+
+    <div class="b-example-divider"></div>
+
+  <div class="container px-4 py-5" id="custom-cards">
+    <h1>{{person.name}}</h1>
+    {% if person.stocks %}
+    <h2 class="pb-2 border-bottom">Stocks Owned</h2>
+    <div id="piechart" style="width: 56.25rem; height: 31.25rem"></div>
+
+    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+      {% for stock in person.stocks %}
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('../static/images/unsplash-photo-3.jpg');">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">{{stock.stock_name}}</h2>
+            <ul class="d-flex list-unstyled mt-auto">
+              <li class="d-flex align-items-center me-3">
+                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
+                <small>Number of Stocks: </small>
+              </li>
+              <li class="d-flex align-items-center">
+                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
+                <small>{{stock.stock_amount}}</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+    {% else %}
+      <div class="b-example-divider"></div>
+
+    <h1 style="margin-bottom: 2rem; margin-top: 2rem">{{person.name}}. Has not bought any stocks yet.</h1>
+      <div class="b-example-divider"></div>
+
+    {% endif %}
+  <div class="b-example-divider"></div>
+  <div class="container">
+    <h2 class="pb-2 border-bottom">Trade History</h2>
+    {% if person.history %}
+      <table class="table table-hover" style="margin-bottom: 2rem">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Transaction Type</th>
+          <th scope="col">Transaction Cost</th>
+          <th scope="col">Stock Name</th>
+          <th scope="col">Stock Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for i in range(person.history | length) %}
+        <tr>
+          <th scope="row">{{i + 1}}</th>
+          <td>{{person.history[i].tran_type}}</td>
+          <td>{{person.history[i].tran_value}}</td>
+          <td>{{person.history[i].stock_name}}</td>
+          <td>{{person.history[i].stock_amount}}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <h1 style="margin-bottom: 2rem; margin-top: 2rem">{{person.name}} has not made any transactions yet.</h1>
+    {% endif %}
+  </div>
+  </main>
+
+  <footer class="container" style="margin-top: 1rem">
+    <p class="float-end"><a href="#">Back to top</a></p>
+    <p>&copy; 2021 Made by @uglkjgj &middot; <a href="https://github.com/uglkjgj/uglkjgj/"><img src="https://img.icons8.com/doodle/48/000000/github--v1.png"/></a></p>
+  </footer>
+{% endblock %}

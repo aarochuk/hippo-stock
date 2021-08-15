@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %} Buy Stock {% endblock %}
+{% block head%}
+<link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+    <link href="{{url_for('static', filename='css/signin.css')}}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <a class="navbar-brand" href="#">
+          <img src="{{url_for('static', filename='images/logo_img.png')}}" alt="" width="35" height="30" style="border-radius: 2px">
+          </a>
+          <li><a href="{{url_for('user_home')}}" class="nav-link px-2 link-dark">Dashboard</a></li>
+          <li><a href="{{url_for('articles')}}" class="nav-link px-2 link-dark">Articles</a></li>
+        </ul>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{{url_for('user_home')}}" method="post">
+          <input name='stock-search' type="search" class="form-control" placeholder="Search Stock..." aria-label="Search">
+        </form>
+
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{ current_user.email | gravatar }}"/>
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+            <li><a class="dropdown-item" href="{{url_for('profile')}}">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{url_for('logout')}}">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+<main class="form-signin" style="text-align: center" >
+    <div class="container py-4">
+
+    <a href="{{url_for('user_home')}}">
+    <img class="mb-4" src="{{url_for('static', filename='images/logo_img.png')}}" alt="" width="72" height="57" style="border-radius: 2px"></a>
+  <form method="post">
+    <h1 class="h3 mb-3 fw-normal">Sell Stock</h1>
+      {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="text-danger">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+      {{ form.csrf_token }}
+      {{ form.stk_name(class_='form-control spacer', id='floatingInput') }}
+      {{ form.stk_amount(class_='form-control spacer', id='floatingPassword') }}
+      {{ form.submit(class_="w-100 btn btn-lg btn-success pusher") }}
+  </form>
+
+    <p class="mt-5 mb-3 text-muted">&copy; 2021 Made by uglkjgj</p>
+    </div>
+</main>
+
+{% endblock %}

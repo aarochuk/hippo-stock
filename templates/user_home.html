@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %} {{current_user.name}} {% endblock %}
+{% block head %}
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/headers/">
+    <link href="{{url_for('static', filename='css/user_home.css')}}" rel="stylesheet">
+    {% if current_user.stocks %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {packages: ['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        // Define the chart to be drawn.
+        var data = new google.visualization.arrayToDataTable([
+          {% for k, v in stock_dict.items() %}
+            {% if v is string %}
+              ['{{ k }}', '{{ v }}'],
+            {% else %}
+              ['{{ k }}', {{ v }}],
+            {% endif %}
+          {% endfor %}
+        ]);
+
+        var options = {
+          title: 'Stocks'
+        }
+        // Instantiate and draw the chart.
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
+    </script>
+    {% endif %}
+  </head>
+{% endblock %}
+
+{% block content%}
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <a class="navbar-brand" href="#">
+          <img src="{{url_for('static', filename='images/logo_img.png')}}" alt="" width="35" height="30" style="border-radius: 2px">
+          </a>
+          <li><a href="{{url_for('user_home')}}" class="nav-link px-2 link-secondary">Dashboard</a></li>
+          <li><a href="{{url_for('articles')}}" class="nav-link px-2 link-dark">Articles</a></li>
+        </ul>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{{url_for('user_home')}}" method="post">
+          <input name='stock-search' type="search" class="form-control" placeholder="Search Stock..." aria-label="Search">
+        </form>
+
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{ current_user.email | gravatar }}"/>
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+            <li><a class="dropdown-item" href="{{url_for('profile')}}">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{url_for('logout')}}">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+
+    <div class="b-example-divider"></div>
+
+  <div class="container px-4 py-5" id="custom-cards">
+    <h1>Funds Available: ${{current_user.funds}}</h1>
+    {% if current_user.stocks %}
+    <h2 class="pb-2 border-bottom">Stocks Owned</h2>
+    <div id="piechart" style="width: 56.25rem; height: 31.25rem"></div>
+
+    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+      {% for stock in current_user.stocks %}
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('../static/images/unsplash-photo-3.jpg');">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">{{stock.stock_name}}</h2>
+            <ul class="d-flex list-unstyled mt-auto">
+              <li class="me-auto">
+                <a href="{{url_for('sell_stock', stk=stock.stock_name)}}">
+                  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="24" height="24"
+viewBox="0 0 172 172"
+                       style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M71.66667,14.33333c-7.83362,0 -14.33333,6.49972 -14.33333,14.33333v35.83333c0,7.83362 6.49972,14.33333 14.33333,14.33333h50.16667c7.83362,0 14.33333,-6.49972 14.33333,-14.33333v-35.83333c0,-7.83362 -6.49972,-14.33333 -14.33333,-14.33333zM71.66667,28.66667h50.16667v35.83333h-50.16667zM86,35.83333v14.33333h21.5v-14.33333zM147.53256,86c-2.59434,0 -5.18867,0.98945 -7.16667,2.96744l-32.86589,32.86589h-28.66667c-1.978,0 -3.58333,-1.60533 -3.58333,-3.58333c0,-1.978 1.60533,-3.58333 3.58333,-3.58333h14.33333c7.91917,0 14.33333,-6.41417 14.33333,-14.33333v-7.16667h-45.46354c-7.60383,0 -14.89323,3.01627 -20.26823,8.39844l-27.4349,27.4349l28.66667,28.66667l14.33333,-14.33333h51.39844c3.79833,0 7.44661,-1.51172 10.13412,-4.19922l35.83333,-35.83333c3.95599,-3.956 3.956,-10.37733 0,-14.33333c-1.978,-1.97799 -4.57233,-2.96744 -7.16667,-2.96744z"></path></g></g></svg></a>
+              </li>
+              <li class="d-flex align-items-center me-3">
+                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
+                <small>Number of Stocks: </small>
+              </li>
+              <li class="d-flex align-items-center">
+                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
+                <small>{{stock.stock_amount}}</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+    {% else %}
+      <div class="b-example-divider"></div>
+
+    <h1 style="margin-bottom: 2rem; margin-top: 2rem">Buy a stock and your stocks would appear here.<br>Search for a stock to buy it.</h1>
+      <div class="b-example-divider"></div>
+
+    {% endif %}
+  <div class="b-example-divider"></div>
+  <div class="container">
+    <h2 class="pb-2 border-bottom">Trade History</h2>
+    {% if current_user.history %}
+      <table class="table table-hover" style="margin-bottom: 2rem">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Transaction Type</th>
+          <th scope="col">Transaction Cost</th>
+          <th scope="col">Stock Name</th>
+          <th scope="col">Stock Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for i in range(current_user.history | length) %}
+        <tr>
+          <th scope="row">{{i + 1}}</th>
+          <td>{{current_user.history[i].tran_type}}</td>
+          <td>{{current_user.history[i].tran_value}}</td>
+          <td>{{current_user.history[i].stock_name}}</td>
+          <td>{{current_user.history[i].stock_amount}}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <h1 style="margin-bottom: 2rem; margin-top: 2rem">All your transaction history would be displayed here.<br>Buy a stock to test it out.</h1>
+    {% endif %}
+  </div>
+  </main>
+
+  <footer class="container" style="margin-top: 1rem">
+    <p class="float-end"><a href="#">Back to top</a></p>
+    <p>&copy; 2021 Made by @uglkjgj &middot; <a href="https://github.com/uglkjgj/uglkjgj/"><img src="https://img.icons8.com/doodle/48/000000/github--v1.png"/></a></p>
+  </footer>
+{% endblock %}

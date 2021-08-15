@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %} Profile Page {% endblock %}
+{% block head %}
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/checkout/">
+
+      <link href="{{url_for('static', filename='css/profile_page.css')}}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <a class="navbar-brand" href="{{url_for('user_home')}}">
+          <img src="{{url_for('static', filename='images/logo_img.png')}}" alt="" width="35" height="30" style="border-radius: 2px">
+          </a>
+      <h2>My Profile</h2>
+    </div>
+      <div class="row g-5">
+          <h2>Funds Available: ${{current_user.funds}}</h2>
+      </div>
+
+    <div class="row g-5">
+      <div class="col-md-5 col-lg-4 order-md-last">
+          {% if current_user.friends %}
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-success">Your Friends</span>
+          <span class="badge bg-success rounded-pill">{{current_user.friends | length}}</span>
+        </h4>
+        <ul class="list-group mb-3">
+           {% for friend in current_user.friends %}
+
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <a href="{{url_for('friend_page', frd=friend.friend_id)}}"> <h6 class="my-0">{{friend.friend_name}}</h6></a>
+            </div>
+          </li>
+            {% endfor %}
+        </ul>
+          {% else %}
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-success">Add Friends First</span>
+          <span class="badge bg-success rounded-pill">0</span>
+            </h4>
+          {% endif %}
+      </div>
+      <div class="col-md-7 col-lg-8" style="padding-top: 2rem">
+        <h4 class="mb-3">Change Password</h4>
+        <form class="needs-validation" novalidate method="post">
+          <div class="row g-3">
+          {% with messages = get_flashed_messages(category_filter=["password"]) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="text-danger">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+          {{ password_form.csrf_token }}
+            {{ password_form.prev_password(class_='form-control spacer', id='floatingInput') }}
+          {{ password_form.new_password(class_='form-control spacer', id='floatingPassword') }}
+          {{ password_form.submit(class_="w-100 btn btn-lg btn-success pusher") }}
+          </div>
+        </form>
+      </div>
+        <div class="col-md-7 col-lg-8">
+          <form class="needs-validation" novalidate method="post">
+          <div class="row g-3">
+              <h4 class="mb-3">Search for friends</h4>
+              {% with messages = get_flashed_messages(category_filter=["friends"]) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="text-danger">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {{ friend_form.csrf_token }}
+            {{ friend_form.email_address(class_='form-control spacer', id='floatingInput') }}
+            {{ friend_form.submit(class_="w-100 btn btn-lg btn-success pusher") }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="float-end"><a href="#">Back to top</a></p>
+    <p>&copy; 2021 Made by @uglkjgj &middot; <a href="https://github.com/uglkjgj/uglkjgj/"><img src="https://img.icons8.com/doodle/48/000000/github--v1.png"/></a></p>
+  </footer>
+</div>
+
+{% endblock %}

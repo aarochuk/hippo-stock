@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %} {{name.upper()}} {% endblock %}
+{% block head %}
+    <link href="{{url_for('static', filename='css/company_page.css')}}" rel="stylesheet">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/jumbotron/">
+
+{% endblock %}
+
+{% block content %}
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <a class="navbar-brand" href="{{url_for('user_home')}}">
+          <img src="{{url_for('static', filename='images/logo_img.png')}}" alt="" width="35" height="30" style="border-radius: 2px">
+          </a>
+          <li><a href="{{url_for('user_home')}}" class="nav-link px-2 link-dark">Dashboard</a></li>
+          <li><a href="{{url_for('articles')}}" class="nav-link px-2 link-dark">Articles</a></li>
+        </ul>
+
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{ current_user.email | gravatar }}"/>
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+            <li><a class="dropdown-item" href="{{url_for('profile')}}">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{url_for('logout')}}">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</header>
+    <main>
+
+      <div class="container py-4">
+
+        <div class="p-5 mb-4 bg-light rounded-3 row">
+          <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">{{ company_info['companyName'] }}</h1>
+            <h1 class="display-5 fw-bold">Stock Price: ${{stock_price}}</h1>
+            <p class="col-md-8 fs-4">{{ company_info['description'] }}</p>
+              {% if user_stock %}
+                <a href="{{url_for('add_follow', stk=name)}}"> <button class="btn btn-danger btn-lg" type="button">Unfollow Stock</button> </a>
+              {% else %}
+                <a href="{{url_for('add_follow', stk=name)}}"> <button class="btn btn-primary btn-lg" type="button">Follow Stock</button> </a>
+              {% endif %}
+
+          </div>
+        </div>
+
+        <div class="row align-items-md-stretch">
+          <div class="col-md-6">
+            <div class="h-100 p-5 text-white bg-dark rounded-3">
+              <h2>Buy Stock</h2>
+              <p>Buy {{name}} stocks. Benefit when their prices increase and their stock rises. </p>
+              <a href="{{url_for('buy_stock', stk=name)}}"><button class="btn btn-outline-light" type="button">Buy Stock</button></a>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="h-100 p-5 bg-light border rounded-3">
+              <h2>See more information about stock</h2>
+              <p>Google search more information about this stock.</p>
+              <a href="https://google.com/search?q={{name}}" target="_blank"> <button class="btn btn-outline-secondary" type="button" >Google Search</button></a>
+            </div>
+          </div>
+        </div>
+
+        <footer class="pt-3 mt-4 text-muted border-top">
+          &copy; 2021
+        </footer>
+      </div>
+    </main>
+{% endblock %}
