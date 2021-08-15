@@ -1,6 +1,6 @@
 [tool]
 [tool.poetry]
-authors = ["uglkjgj"]
+authors = "uglkjgj"
 name = "root"
 version = "0.0.0"
 description="flask template"
