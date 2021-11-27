@@ -14,9 +14,10 @@ from random import shuffle
 
 app = Flask(__name__)
 Bootstrap(app)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hippo-stock.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+TOKEN = 'sk_9f6274ec2b0140d2837fd35581a96f64'
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
@@ -90,11 +91,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/favicon.ico')
-def favicon():
-    return url_for('static', filename='icons/icon.ico')
-
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     login_form = LoginForm()
@@ -162,7 +158,7 @@ def user_home():
 def comp_data():
     stk = request.args.get('stk')
     payload = {
-        "token": os.environ.get('TOKEN')
+        "token": TOKEN
     }
     info = requests.get(f'https://cloud.iexapis.com/stable/stock/{stk}/company', params=payload)
     if info and stk.lower()!='appl':
@@ -215,7 +211,7 @@ def articles():
     if stocks:
         for stock in stocks:
             payload = {
-                "token": os.environ.get('TOKEN')
+                "token": TOKEN
             }
             info = requests.get(f'https://cloud.iexapis.com/stable/stock/{stock.stock_name}/news/last/7', params=payload)
             if info:
@@ -252,7 +248,7 @@ def buy_stock():
         name = None
     if form.validate_on_submit():
         payload = {
-            "token": os.environ.get('TOKEN')
+            "token": TOKEN
         }
         try:
             cost = int(requests.get(f'https://cloud.iexapis.com/stable/stock/{form.stk_name.data}/quote/latestPrice', params=payload).json())
@@ -305,7 +301,7 @@ def sell_stock():
         if num_stks >= int(form.stk_amount.data):
             stock_amount = num_stks - int(form.stk_amount.data)
             payload = {
-                "token": os.environ.get('TOKEN')
+                "token": TOKEN
             }
             current_val = int(requests.get(f'https://cloud.iexapis.com/stable/stock/{form.stk_name.data}/quote/latestPrice', params=payload).json())
             if stock_amount == 0:
@@ -345,4 +341,4 @@ def friend_page():
 
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

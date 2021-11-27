@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/Users/odinakaarochukwu/Desktop/hippo stock/venv/bin/python" "$0" "$@"
-' '''
+#!/Users/odinakaarochukwu/Documents/projects/hippo-stock/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
