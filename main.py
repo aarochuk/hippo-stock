@@ -15,12 +15,10 @@ from random import shuffle
 app = Flask(__name__)
 Bootstrap(app)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-# '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 # 'sqlite:///hippo-stock.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 TOKEN = os.environ.get('TOKEN')
-# 'sk_9f6274ec2b0140d2837fd35581a96f64'
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
